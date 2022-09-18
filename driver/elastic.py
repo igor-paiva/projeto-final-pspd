@@ -159,8 +159,8 @@ def filter_by_size(word, length):
 
 
 def func(batch_df, batch_id):
-    print(f"\nBatch ID: {batch_id}\n")
-    print(f"\n\tReceived words: {len(batch_df.count())}\n")
+    print(f"\nBatch ID: {batch_id}")
+    print(f"\tReceived words: {batch_df.count()}\n")
 
     words_list = list(
         filter(
@@ -168,6 +168,8 @@ def func(batch_df, batch_id):
             map(lambda row: row.word, batch_df.collect()),
         )
     )
+
+    print(f"\tFiltered words: {len(words_list)}\n")
 
     starts_with_s = list(filter(lambda word: filter_starts_with(word, "S"), words_list))
     starts_with_r = list(filter(lambda word: filter_starts_with(word, "R"), words_list))
