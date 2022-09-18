@@ -1,0 +1,42 @@
+:: loading settings :: url = jar:file:/spark-driver/spark-3.1.3-bin-hadoop3.2/jars/ivy-2.4.0.jar!/org/apache/ivy/core/settings/ivysettings.xml
+
+Batch ID: 0
+
+
+Batch ID: 1
+
+
+Batch ID: 2
+
+
+Batch ID: 3
+
+
+Batch ID: 4
+
+
+Batch ID: 5
+
+
+Batch ID: 6
+
+
+Batch ID: 7
+
+
+Batch ID: 8
+
+
+Batch ID: 9
+
+Traceback (most recent call last):
+  File "/spark-driver/elastic.py", line 277, in <module>
+    words.writeStream.foreachBatch(func).start().awaitTermination()
+  File "/spark-driver/spark-3.1.3-bin-hadoop3.2/python/lib/pyspark.zip/pyspark/sql/streaming.py", line 101, in awaitTermination
+  File "/spark-driver/spark-3.1.3-bin-hadoop3.2/python/lib/py4j-0.10.9-src.zip/py4j/java_gateway.py", line 1303, in __call__
+  File "/spark-driver/spark-3.1.3-bin-hadoop3.2/python/lib/py4j-0.10.9-src.zip/py4j/java_gateway.py", line 1033, in send_command
+  File "/spark-driver/spark-3.1.3-bin-hadoop3.2/python/lib/py4j-0.10.9-src.zip/py4j/java_gateway.py", line 1200, in send_command
+  File "/usr/local/lib/python3.7/socket.py", line 589, in readinto
+    return self._sock.recv_into(b)
+  File "/spark-driver/spark-3.1.3-bin-hadoop3.2/python/lib/pyspark.zip/pyspark/context.py", line 285, in signal_handler
+KeyboardInterrupt
