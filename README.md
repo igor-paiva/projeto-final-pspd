@@ -1,4 +1,4 @@
-# Parte 2 - Spark Streaming contabilizando palavras via Apache Kafka
+# Projeto Final
 
 Igor Batista Paiva - 18/0018728
 
