@@ -14,6 +14,36 @@ Para instalar todas as dependências e criar todos os elementos necessários uti
 bash setup.sh
 ```
 
+### Tweets Twitter
+
+A aplicação pode ler tweets do Twitter, a leitura é feita utilizando autenticação OAuth utilizando as chaves disponibilizadas para acesso a API, a cada 5 segundos é feita uma requisição para buscar os tweets recentes que contêm a hashtag #meme e são escritos em inglês (outros critérios podem ser utilizados), as mensagens dos tweets são extraídas e enviadas para o tópico no Kafka.
+
+**Para definir a variável de ambiente com o token utilize os comandos abaixo**:
+
+```
+docker exec -it discord-kafka-publisher bash
+
+# dentro do container
+export TWITTER_API_TOKEN=<PLACE THE TOKEN HERE>
+```
+
+### Mensagens Discord
+
+A aplicação pode ler mensagens de um servidor do [Discord](https://discord.com), será necessário colocar um bot com permissões no servidor e então fornecer o token do bot para o container `discord-kafka-publisher`.
+
+Será necessário marcar para o Bot a opção `MESSAGE CONTENT INTENT` e dar as permissões `Read Messages/View Channels`, `Read Message History`.
+
+**Para definir a variável de ambiente com o token utilize os comandos abaixo**:
+
+```
+docker exec -it discord-kafka-publisher bash
+
+# dentro do container
+export BOT_TOKEN=<PLACE THE TOKEN HERE>
+```
+
+O código foi feito seguindo as recomendações da [API do Discord](https://discord.com/developers/docs/intro), autenticação utilizando [OAuth2](https://discord.com/developers/docs/topics/oauth2#shared-resources-oauth2-scopes) e também a biblioteca do Python [discord.py](https://discordpy.readthedocs.io/en/stable/quickstart.html).
+
 ## Como executar
 
 Após ter rodado o *setup* com sucesso para iniciar novamente só é necessário subir os containers e seguir os demais passos:
@@ -26,32 +56,62 @@ Os containers sobem em modo *detach*, portanto caso queira ver os logs dos conta
 
 ```
 docker-compose logs -f
+
+# ou
+
+docker-compose logs <SERVICE NAME> -f
 ```
 
-### Iniciar o master
+### Iniciar o master e os workers
 
-Será necessário iniciar o spark master:
-
-```
-docker exec -it spark-master bash spark-3.1.3-bin-hadoop3.2/sbin/start-master.sh
-```
-
-### Iniciar os workers
-
-Para iniciar os *workers*:
+Será necessário iniciar o spark master e os spark workers:
 
 ```
-docker exec -it spark-worker-1 bash spark-3.1.3-bin-hadoop3.2/sbin/start-worker.sh -m 1G -c 1 spark://spark-master:7077 && docker exec -it spark-worker-2 bash spark-3.1.3-bin-hadoop3.2/sbin/start-worker.sh -m 1G -c 1 spark://spark-master:7077
+bash start_master_workers.sh
 ```
 
-### Iniciar o publisher
+Este script simplemente inicia os nós utilizando os scripts do Spark, para os workers é utilizado 1 GB de memória e 1 core.
 
-O publisher envia eventos para o servidor Kafka a cada meio segundo (0,5 segundo) com um paragrafo de texto.
+### Kafka Publishers
+
+#### Iniciar o Twitter publisher
+
+Este script irá buscar tweets e enviará o conteúdo da mensagem para o [Apache Kafka](https://kafka.apache.org/).
 
 Em um novo terminal (a chamada é blocante):
 
 ```
-docker exec -it kafka-publisher bash
+docker exec -it twitter-kafka-publisher bash
+
+# dentro do container
+python3 -u main.py
+```
+
+Para encerrar: `CTRL + C`.
+
+#### Iniciar o Discord publisher
+
+Este script irá escutar a chegada de mensagens no servidor do Discord configurado e enviará o conteúdo da mensagem para o [Apache Kafka](https://kafka.apache.org/).
+
+Em um novo terminal (a chamada é blocante):
+
+```
+docker exec -it discord-kafka-publisher bash
+
+# dentro do container
+python3 -u main.py
+```
+
+Para encerrar: `CTRL + C`.
+
+#### Iniciar o random publisher
+
+O publisher envia eventos para o servidor Kafka a cada um segundo (1 segundo) com um paragrafo de texto gerado aleatoriamente pela biblioteca [essential-generators](https://pypi.org/project/essential-generators/).
+
+Em um novo terminal (a chamada é blocante):
+
+```
+docker exec -it random-kafka-publisher bash
 
 # dentro do container
 python3 -u main.py
@@ -67,22 +127,52 @@ Em um novo terminal entre no container do spark driver:
 docker exec -it spark-driver bash
 ```
 
-Para submeter o problema utilize um dos comandos abaixo, o arquivo txt no final é para onde os resultados serão salvos.
-
-#### Local
-
-Para o modo local não é necessário iniciar o spark master e workers.
+Para submeter o programa utilize o comando abaixo, o arquivo txt no final pode ser utilizado para ver a quantidade de mensagens recebidas e filtradas para cada batch.
 
 ```
-./spark-3.1.3-bin-hadoop3.2/bin/spark-submit --packages org.apache.spark:spark-sql-kafka-0-10_2.12:3.1.3 local.py > results.txt
-```
-
-#### Cluster
-
-```
-./spark-3.1.3-bin-hadoop3.2/bin/spark-submit --packages org.apache.spark:spark-sql-kafka-0-10_2.12:3.1.3 cluster.py > results.txt
+./spark-3.1.3-bin-hadoop3.2/bin/spark-submit --packages org.apache.spark:spark-sql-kafka-0-10_2.12:3.1.3 elastic.py > results.txt
 ```
 
 ## Resultados
 
-Os resultados serão listados como tabelas com nomes de colunas descritivos no arquivo texto fornecido como saída para o comando `spark-submit`.
+Os dados provenientes do Kafka são processados pelo Spark e enviados para o Elasticsearch, esses dados podem ser analisados utilizando o Kibana.
+
+Para acessar a interface gráfica do Kibana acesse http://localhost:5601/.
+
+### Importar o dashboard
+
+#### Passo 1
+
+Na sidebar da interface em `Management` clique em `Stack Management`.
+
+![Passo 1](images/kibana_1.png)
+
+#### Passo 2
+
+Na sidebar em `Kibana` clique em `Saved Objects`.
+
+![Passo 2](images/kibana_2.png)
+
+#### Passo 3
+
+Clique no botão de `import` e selecione o arquivo disponível na pasta `dashboard/export_words_dashboard.ndjson` e marque as opções desejadas.
+
+![Passo 3](images/kibana_3.png)
+
+#### Passo 4
+
+Veja o dashboard na página de Dashboard. `Analytics` => `Dashboard`.
+
+![Passo $](images/kibana_4.png)
+
+## Observações
+
+Para facilitar a execução algumas das imagens foram adicionadas ao [Docker Hub](https://hub.docker.com/):
+
+- [Spark master](https://hub.docker.com/repository/docker/igorrunb/spark-master/general)
+- [Spark worker](https://hub.docker.com/repository/docker/igorrunb/spark-worker/general)
+- [Kafka Server](https://hub.docker.com/repository/docker/igorrunb/kafka-server)
+- [Kafka Zookeeper](https://hub.docker.com/repository/docker/igorrunb/kafka-zookeeper)
+- [Random Kafka Publisher](https://hub.docker.com/repository/docker/igorrunb/random-kafka-publisher)
+
+Essas imagens são iguais as do projeto de pesquisa anterior e podem ser encontradas [aqui](https://github.com/igor-paiva/spark-streaming-kafka).
