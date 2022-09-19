@@ -1,2 +1,0 @@
-:: loading settings :: url = jar:file:/spark-driver/spark-3.1.3-bin-hadoop3.2/jars/ivy-2.4.0.jar!/org/apache/ivy/core/settings/ivysettings.xml
-python3: can't open file '/spark-driver/elastic.py': [Errno 2] No such file or directory
