@@ -1,0 +1,204 @@
+:: loading settings :: url = jar:file:/spark-driver/spark-3.1.3-bin-hadoop3.2/jars/ivy-2.4.0.jar!/org/apache/ivy/core/settings/ivysettings.xml
+
+Batch ID: 0
+	Received words: 0
+
+	Filtered words: 0
+
+
+Batch ID: 1
+	Received words: 104
+
+	Filtered words: 101
+
+
+Batch ID: 2
+	Received words: 104
+
+	Filtered words: 101
+
+
+Batch ID: 3
+	Received words: 58
+
+	Filtered words: 40
+
+
+Batch ID: 4
+	Received words: 200
+
+	Filtered words: 159
+
+
+Batch ID: 5
+	Received words: 179
+
+	Filtered words: 140
+
+
+Batch ID: 6
+	Received words: 168
+
+	Filtered words: 129
+
+
+Batch ID: 7
+	Received words: 184
+
+	Filtered words: 142
+
+
+Batch ID: 8
+	Received words: 26
+
+	Filtered words: 21
+
+
+Batch ID: 9
+	Received words: 82
+
+	Filtered words: 63
+
+
+Batch ID: 10
+	Received words: 225
+
+	Filtered words: 168
+
+
+Batch ID: 11
+	Received words: 231
+
+	Filtered words: 170
+
+
+Batch ID: 12
+	Received words: 129
+
+	Filtered words: 97
+
+
+Batch ID: 13
+	Received words: 176
+
+	Filtered words: 142
+
+
+Batch ID: 14
+	Received words: 118
+
+	Filtered words: 93
+
+
+Batch ID: 15
+	Received words: 215
+
+	Filtered words: 163
+
+
+Batch ID: 16
+	Received words: 106
+
+	Filtered words: 84
+
+
+Batch ID: 17
+	Received words: 120
+
+	Filtered words: 89
+
+
+Batch ID: 18
+	Received words: 113
+
+	Filtered words: 85
+
+
+Batch ID: 19
+	Received words: 111
+
+	Filtered words: 86
+
+
+Batch ID: 20
+	Received words: 60
+
+	Filtered words: 45
+
+
+Batch ID: 21
+	Received words: 114
+
+	Filtered words: 85
+
+
+Batch ID: 22
+	Received words: 96
+
+	Filtered words: 78
+
+
+Batch ID: 23
+	Received words: 78
+
+	Filtered words: 62
+
+
+Batch ID: 24
+	Received words: 158
+
+	Filtered words: 122
+
+
+Batch ID: 25
+	Received words: 230
+
+	Filtered words: 170
+
+
+Batch ID: 26
+	Received words: 24
+
+	Filtered words: 17
+
+
+Batch ID: 27
+	Received words: 242
+
+	Filtered words: 184
+
+
+Batch ID: 28
+	Received words: 196
+
+	Filtered words: 154
+
+
+Batch ID: 29
+	Received words: 107
+
+	Filtered words: 81
+
+
+Batch ID: 30
+	Received words: 20
+
+	Filtered words: 15
+
+
+Batch ID: 31
+	Received words: 98
+
+	Filtered words: 72
+
+Traceback (most recent call last):
+  File "/spark-driver/elastic.py", line 198, in <module>
+    words.writeStream.foreachBatch(func).start().awaitTermination()
+  File "/spark-driver/spark-3.1.3-bin-hadoop3.2/python/lib/pyspark.zip/pyspark/sql/streaming.py", line 101, in awaitTermination
+  File "/spark-driver/spark-3.1.3-bin-hadoop3.2/python/lib/py4j-0.10.9-src.zip/py4j/java_gateway.py", line 1303, in __call__
+  File "/spark-driver/spark-3.1.3-bin-hadoop3.2/python/lib/py4j-0.10.9-src.zip/py4j/java_gateway.py", line 1033, in send_command
+  File "/spark-driver/spark-3.1.3-bin-hadoop3.2/python/lib/py4j-0.10.9-src.zip/py4j/java_gateway.py", line 1200, in send_command
+  File "/usr/local/lib/python3.7/socket.py", line 589, in readinto
+    return self._sock.recv_into(b)
+  File "/spark-driver/spark-3.1.3-bin-hadoop3.2/python/lib/pyspark.zip/pyspark/context.py", line 285, in signal_handler
+KeyboardInterrupt

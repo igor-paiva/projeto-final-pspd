@@ -11,7 +11,6 @@ from pyspark.sql.functions import (
     udf,
     regexp_replace,
 )
-from pyspark.sql.types import BooleanType
 from elasticsearch import Elasticsearch
 from datetime import datetime
 
@@ -138,7 +137,7 @@ lines = (
     .option("failOnDataLoss", "false")
     .option("subscribe", "sentences")
     .option("includeHeaders", "true")
-    .option("startingOffsets", "earliest")  # we could use latest
+    .option("startingOffsets", "latest")  # we could use earliest
     .option("spark.streaming.kafka.maxRatePerPartition", "50")
     .load()
 )
