@@ -16,7 +16,7 @@ bash setup.sh
 
 ### Tweets Twitter
 
-A aplicação pode ler tweets do Twitter, a leitura é feita utilizando autenticação OAuth utilizando as chaves disponibilizadas para acesso a API, a cada 5 segundos é feita uma requisição para buscar os tweets recentes que contêm a hashtag #meme e são escritos em inglês (outros critérios podem ser utilizados), as mensagens dos tweets são extraídas e enviadas para o tópico no Kafka.
+A aplicação pode ler tweets do Twitter, a leitura é feita utilizando autenticação OAuth utilizando as chaves disponibilizadas para acesso a API, a cada 5 segundos é feita uma requisição para buscar os tweets recentes que contêm a hashtag `#meme` e são escritos em inglês (outros critérios poderiam ser utilizados), as mensagens dos tweets são extraídas e enviadas para o tópico no Kafka.
 
 **Para definir a variável de ambiente com o token utilize os comandos abaixo**:
 

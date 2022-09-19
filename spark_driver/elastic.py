@@ -2,20 +2,13 @@ from pyspark.sql import SparkSession
 from pyspark.sql.functions import (
     explode,
     split,
-    initcap,
-    count,
     length,
-    window,
     col,
-    lit,
-    udf,
     regexp_replace,
 )
 from elasticsearch import Elasticsearch
 from datetime import datetime
 
-
-MAX_NUM_ROWS = 2147483647
 
 ARTICLES = [
     "a",
@@ -133,7 +126,6 @@ spark = (
 lines = (
     spark.readStream.format("kafka")
     .option("kafka.bootstrap.servers", "kafka-server:9092")
-    # .option("kafka.security.protocol", "SSL")
     .option("failOnDataLoss", "false")
     .option("subscribe", "sentences")
     .option("includeHeaders", "true")
