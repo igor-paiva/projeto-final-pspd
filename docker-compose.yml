@@ -2,14 +2,15 @@ version: "3.9"
 
 services:
   spark-driver:
-    image: igorrunb/spark-driver
+    # image: igorrunb/spark-driver
+    build:
+      context: ./spark_driver
     container_name: spark-driver
     volumes:
-      - ./driver:/spark-driver
+      - ./spark_driver:/spark-driver
       - ./spark-3.1.3-bin-hadoop3.2:/spark-driver/spark-3.1.3-bin-hadoop3.2
     depends_on:
       - kafka-server
-      - kafka-publisher
       - spark-master
       - spark-worker-1
       - spark-worker-2
@@ -62,15 +63,37 @@ services:
     networks:
       - pspd-projeto-final
 
-  kafka-publisher:
-    build:
-      context: ./kafka_publisher
-    container_name: kafka-publisher
+  random-kafka-publisher:
+    image: igorrunb/random-kafka-publisher
+    container_name: random-kafka-publisher
     depends_on:
       - kafka-server
     volumes:
-      - ./kafka_publisher:/publisher
       - ./kafka_2.13-3.2.1:/publisher/kafka_2.13-3.2.1
+    networks:
+      - pspd-projeto-final
+
+  twitter-kafka-publisher:
+    build:
+      context: ./twitter
+    container_name: twitter-kafka-publisher
+    depends_on:
+      - kafka-server
+    volumes:
+      # - ./twitter:/twitter
+      - ./kafka_2.13-3.2.1:/twitter/kafka_2.13-3.2.1
+    networks:
+      - pspd-projeto-final
+
+  discord-kafka-publisher:
+    build:
+      context: ./discord
+    container_name: discord-kafka-publisher
+    depends_on:
+      - kafka-server
+    volumes:
+      # - ./discord:/discord
+      - ./kafka_2.13-3.2.1:/discord/kafka_2.13-3.2.1
     networks:
       - pspd-projeto-final
 
