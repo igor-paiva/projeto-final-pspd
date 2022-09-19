@@ -161,7 +161,7 @@ Clique no botão de `import` e selecione o arquivo disponível na pasta `dashboa
 
 #### Passo 4
 
-Veja o dashboard na página de Dashboard. `Analytics` => `Dashboard`.
+Veja o dashboard na página de Dashboard. `Analytics` => `Dashboard`. Para ver o dashboard ser atualizado com a chegada de novos dados ative o `refresh every` para a quantia desejada.
 
 ![Passo $](images/kibana_4.png)
 
